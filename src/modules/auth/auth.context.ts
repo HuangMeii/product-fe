@@ -4,6 +4,7 @@ import { createContext, useContext } from 'react';
 export interface AuthState {
     user: User | null;
     token: string | null;
+    initialized?: boolean;
 }
 
 export interface AuthContextValue extends AuthState {

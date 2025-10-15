@@ -9,8 +9,10 @@ import * as userService from '#/modules/user/user.service';
 export function AuthProviderClient({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
+        let mounted = true;
         const t = authService.getToken();
         if (t) {
             // ensure axios header is set before calling getMe
@@ -22,22 +24,31 @@ export function AuthProviderClient({ children }: { children: React.ReactNode }) 
                 try {
                     const resp = await userService.getMe();
                     if (resp?.success && resp.data) {
-                        setUser(resp.data as User);
+                        if (mounted) setUser(resp.data as User);
                     } else {
                         // server responded but didn't return user => treat as unauth
                         authService.setToken(null);
-                        setToken(null);
+                        if (mounted) setToken(null);
                     }
                 } catch (err: any) {
                     // Only clear token for auth errors (401/403). For other errors (network), keep token.
                     const status = err?.response?.status;
                     if (status === 401 || status === 403) {
                         authService.setToken(null);
-                        setToken(null);
+                        if (mounted) setToken(null);
                     }
+                } finally {
+                    if (mounted) setInitialized(true);
                 }
             })();
+        } else {
+            // no token — initialization done
+            setInitialized(true);
         }
+
+        return () => {
+            mounted = false;
+        };
     }, []);
 
     const setAuth = (u: User | null, t: string | null) => {
@@ -95,7 +106,7 @@ export function AuthProviderClient({ children }: { children: React.ReactNode }) 
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, setAuth, logout, login, register, checkAuth }}>
+        <AuthContext.Provider value={{ user, token, initialized, setAuth, logout, login, register, checkAuth }}>
             {children}
         </AuthContext.Provider>
     );
