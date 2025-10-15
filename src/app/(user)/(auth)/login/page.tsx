@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Lock, Mail, LogIn } from 'lucide-react'
 import { useAuth } from '#/modules/auth/auth.context'
+import Link from 'next/link'
+import { ROUTES } from '#/shared/contants'
 
 export default function LoginPage() {
     const router = useRouter()
@@ -98,14 +100,20 @@ export default function LoginPage() {
                         {loading ? 'Logging in...' : 'Login'}
                     </button>
 
-                    <button
-                        type="button"
-                        onClick={fillDemo}
-                        className="px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 transition"
-                    >
-                        Fill demo
-                    </button>
                 </div>
+                <button
+                    type="button"
+                    onClick={fillDemo}
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 transition"
+                >
+                    Fill demo
+                </button>
+                <Link
+                    href={ROUTES.REGISTER}
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 transition"
+                >
+                    Register
+                </Link>
 
                 {error && <p className="text-red-500 text-sm">{error}</p>}
             </form>

@@ -62,17 +62,24 @@ export const Header = () => {
                                 <span>Login</span>
                             </Link>
                         ) : (
-                            <div className="relative" ref={menuRef}>
-                                <Link href="/user/profile" className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-black transition-colors">
-                                    {
-                                        user.name
-                                    }
+                            <div
+                                className="relative"
+                                ref={menuRef}
+                                onMouseEnter={() => setOpen(true)}
+                                onMouseLeave={() => setOpen(false)}
+                            >
+                                <Link
+                                    href="/user/profile"
+                                    className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-black transition-colors"
+                                    onClick={() => setOpen((s) => !s)}
+                                >
+                                    {user.name}
                                     <UserIcon size={18} />
                                 </Link>
 
 
                                 {open && (
-                                    <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-sm z-50">
+                                    <div className="absolute right-0 w-40 bg-white border rounded shadow-sm z-50">
                                         <Link href="/user/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profile</Link>
                                         <button onClick={() => { logout(); setOpen(false); }} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50 flex items-center gap-2"><LogOut size={16} /> Logout</button>
                                     </div>
