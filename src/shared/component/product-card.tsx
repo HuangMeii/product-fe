@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react'
 import { Product } from '#/modules/product'
+import Link from 'next/link'
+import { slugify } from '../utils'
 import { ShoppingCart, Heart } from 'lucide-react'
 import * as cartService from '#/modules/cart/cart.service'
 import { toast } from 'react-hot-toast'
@@ -13,7 +15,10 @@ export const ProductCard = ({ product }: { product: Product }) => {
     const [adding, setAdding] = useState(false)
     const [added, setAdded] = useState(false)
 
-    const handleAdd = async () => {
+    const handleAdd = async (e?: React.MouseEvent) => {
+        // prevent parent Link navigation when clicking add-to-cart
+        e?.stopPropagation()
+        e?.preventDefault()
         if (adding || product.stock <= 0) return
         setAdding(true)
             try {
@@ -28,8 +33,10 @@ export const ProductCard = ({ product }: { product: Product }) => {
             }
     }
 
+    const slug = `${product._id}-${slugify(product.name)}`
+
     return (
-        <div className="group">
+        <Link href={`/product/${slug}`} className="group block">
             <div className="relative overflow-hidden">
                 {
                     src ? (
@@ -48,10 +55,10 @@ export const ProductCard = ({ product }: { product: Product }) => {
                 }
 
                     <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-2 bg-white rounded-full shadow hover:bg-gray-100">
+                        <button onClick={(e) => { e.stopPropagation(); }} className="p-2 bg-white rounded-full shadow hover:bg-gray-100">
                             <Heart size={18} className="text-gray-800" />
                         </button>
-                        <button onClick={handleAdd} className={cn('p-2 cursor-pointer rounded-full shadow', product.stock > 0 ? 'bg-black hover:bg-gray-800' : 'bg-gray-200 cursor-not-allowed')}>
+                        <button onClick={handleAdd} className={cn('p-2 cursor-pointer rounded-full shadow', product.stock > 0 ? 'bg-black hover:bg-gray-800' : 'bg-gray-200 cursor-not-allowed') }>
                             {adding ? (
                                 <svg className="w-4 h-4 animate-spin text-white" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
@@ -88,6 +95,6 @@ export const ProductCard = ({ product }: { product: Product }) => {
                     </span>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
