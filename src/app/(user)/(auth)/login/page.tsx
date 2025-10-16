@@ -6,6 +6,7 @@ import { Lock, Mail, LogIn } from 'lucide-react'
 import { useAuth } from '#/modules/auth/auth.context'
 import Link from 'next/link'
 import { ROUTES } from '#/shared/contants'
+import { toast } from 'react-hot-toast'
 
 export default function LoginPage() {
     const router = useRouter()
@@ -17,15 +18,16 @@ export default function LoginPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setError(null)
+    // clear any previous inline errors
+    // show toasts for errors/success instead
 
         if (!email || !password) {
-            setError('Please provide email and password')
+            toast.error('Please provide email and password')
             return
         }
 
         if (!login) {
-            setError('Auth service unavailable')
+            toast.error('Auth service unavailable')
             return
         }
 
@@ -33,13 +35,14 @@ export default function LoginPage() {
         try {
             const ok = await login(email, password)
             if (ok) {
+                toast.success('Login successful')
                 router.replace('/')
             } else {
-                setError('Login failed: invalid credentials')
+                toast.error('Login failed: invalid credentials')
             }
         } catch (err: any) {
             const msg = err?.response?.data?.message || err?.message || 'Login failed'
-            setError(msg)
+            toast.error(msg)
         } finally {
             setLoading(false)
         }
@@ -115,7 +118,7 @@ export default function LoginPage() {
                     Register
                 </Link>
 
-                {error && <p className="text-red-500 text-sm">{error}</p>}
+                {/* keep visual area for accessibility if needed */}
             </form>
         </div>
     )

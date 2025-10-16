@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "#/modules/auth/auth.context";
 import { ROUTES } from "#/shared/contants";
 import { User, Mail, Lock, Loader2 } from "lucide-react";
+import { toast } from 'react-hot-toast'
 
 export default function Register() {
     const router = useRouter();
@@ -14,23 +15,23 @@ export default function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
         if (!name || !email || !password) {
-            setError("Vui lòng điền đủ thông tin");
+            toast.error('Vui lòng điền đủ thông tin')
             return;
         }
 
         setLoading(true);
         try {
             const ok = await register?.(name, email, password);
-            if (ok) router.push(ROUTES.HOME);
-            else setError("Đăng ký thất bại");
+            if (ok) {
+                toast.success('Đăng ký thành công')
+                router.push(ROUTES.HOME);
+            } else toast.error('Đăng ký thất bại')
         } catch (err: any) {
-            setError(err?.response?.data?.message || err?.message || "Lỗi server");
+            toast.error(err?.response?.data?.message || err?.message || 'Lỗi server')
         } finally {
             setLoading(false);
         }
@@ -43,11 +44,7 @@ export default function Register() {
                     Tạo tài khoản mới
                 </h2>
 
-                {error && (
-                    <div className="text-sm text-red-700 bg-red-50 border border-red-100 rounded-md px-4 py-2 mb-4 text-center">
-                        {error}
-                    </div>
-                )}
+                {/* inline error removed; toasts are used instead */}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>

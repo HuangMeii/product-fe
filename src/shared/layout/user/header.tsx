@@ -4,10 +4,12 @@ import Link from 'next/link'
 import { ShoppingCart, User as UserIcon, LogOut } from 'lucide-react'
 import { ROUTES } from '#/shared/contants'
 import { useAuth } from '#/modules/auth/auth.context'
+import * as cartService from '#/modules/cart/cart.service'
 import { useState, useRef, useEffect } from 'react'
 
 export const Header = () => {
     const { user, logout } = useAuth();
+    const [cartCount, setCartCount] = useState(0);
     const [open, setOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -20,6 +22,28 @@ export const Header = () => {
         document.addEventListener('click', onDoc);
         return () => document.removeEventListener('click', onDoc);
     }, []);
+
+    useEffect(() => {
+        let mounted = true;
+        const load = async () => {
+            if (!user) {
+                if (mounted) setCartCount(0);
+                return;
+            }
+            try {
+                const resp = await cartService.getCart();
+                if (mounted && resp?.success && resp.data) {
+                    const total = resp.data.items?.reduce((s, it) => s + (it.quantity || 0), 0) || 0;
+                    setCartCount(total);
+                }
+            } catch (err) {
+                if (mounted) setCartCount(0);
+            }
+        }
+        load();
+
+        return () => { mounted = false };
+    }, [user]);
 
     return (
         <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
@@ -92,9 +116,11 @@ export const Header = () => {
                             className="relative text-gray-700 hover:text-black transition-colors"
                         >
                             <ShoppingCart size={22} />
-                            <span className="absolute -top-1.5 -right-2 bg-black text-white text-xs rounded-full px-1.5">
-                                2
-                            </span>
+                            {cartCount > 0 && (
+                                <span className="absolute -top-1.5 -right-2 bg-black text-white text-xs rounded-full px-1.5">
+                                    {cartCount}
+                                </span>
+                            )}
                         </Link>
                     </div>
                 </div>
