@@ -1,35 +1,58 @@
-import Link from 'next/link'
-
+import { ROUTES } from '#/shared/constant';
+import Link from 'next/link';
 
 export const Header = () => {
-  return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    const navigation = [
+        {
+            id: '1',
+            label: 'Home',
+            url: '/',
+        },
+        {
+            id: '2',
+            label: 'Products',
+            url: '/product',
+        },
+        {
+            id: '3',
+            label: 'About',
+            url: '/about',
+        },
+        {
+            id: '4',
+            label: 'Contact',
+            url: '/contact',
+        },
+    ];
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-gray-900 tracking-tight">
-              My<span className="text-blue-600">Shop</span>
-            </span>
-          </Link>
+    return (
+        <header className="flex justify-between px-10 py-5 bg-primary text-white text-lg items-center">
+            {/* 1 */}
+            <Link className="" href={ROUTES.HOME}>
+                MyShop
+            </Link>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Home</Link>
-            <Link href="/products" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Products</Link>
-            <Link href="/about" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">About</Link>
-            <Link href="/contact" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Contact</Link>
-          </nav>
+            {/* 2 */}
+            <nav className="hidden md:flex md:gap-x-10 lg:gap-x-20 xl:gap-x-24">
+                {navigation?.map((nav, index) => (
+                    <Link
+                        className="hover:underline hover:scale-110 transition-all duration-300"
+                        id={nav?.id}
+                        key={nav?.id || index}
+                        href={nav?.url}
+                    >
+                        {nav?.label}
+                    </Link>
+                ))}
+            </nav>
 
-          {/* Placeholder cho nút hoặc icon */}
-          <div>
-            <button className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-              Login
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-  )
-}
+            {/* 3 */}
+            <Link
+                className="bg-blue-600 px-6 py-1 rounded-full shadow-black hover:shadow-lg transition-all duration-300"
+                href={ROUTES.LOGIN}
+            >
+                Login
+            </Link>
+        </header>
+    );
+};
