@@ -1,98 +1,130 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { User } from '../user/user.type';
 import { AuthContext } from './auth.context';
 import * as authService from './auth.service';
 import * as userService from '#/modules/user/user.service';
 
-export function AuthProviderClient({ children }: { children: React.ReactNode }) {
+export function AuthProviderClient({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const [user, setUser] = useState<User | null>(null);
-    const [token, setToken] = useState<string | null>(null);
+    const [token, setTokenState] = useState<string | null>(null);
     const [initialized, setInitialized] = useState(false);
 
-    useEffect(() => {
-        let mounted = true;
-        const t = authService.getToken();
-        if (t) {
-            // ensure axios header is set before calling getMe
-            authService.setToken(t);
-            setToken(t);
+    // Hàm xử lý auth response chung
+    const handleAuthSuccess = useCallback(
+        (userData: User, tokenValue: string) => {
+            authService.setToken(tokenValue);
+            setUser(userData);
+            setTokenState(tokenValue);
+        },
+        []
+    );
 
-            // try to restore user from server
-            (async () => {
-                try {
-                    const resp = await userService.getMe();
-                    if (resp?.success && resp.data) {
-                        if (mounted) setUser(resp.data as User);
-                    } else {
-                        // server responded but didn't return user => treat as unauth
-                        authService.setToken(null);
-                        if (mounted) setToken(null);
-                    }
-                } catch (err: any) {
-                    // Only clear token for auth errors (401/403). For other errors (network), keep token.
-                    const status = err?.response?.status;
-                    if (status === 401 || status === 403) {
-                        authService.setToken(null);
-                        if (mounted) setToken(null);
-                    }
-                } finally {
-                    if (mounted) setInitialized(true);
-                }
-            })();
-        } else {
-            // no token — initialization done
-            setInitialized(true);
-        }
-
-        return () => {
-            mounted = false;
-        };
-    }, []);
-
-    const setAuth = (u: User | null, t: string | null) => {
-        setUser(u);
-        setToken(t);
-    };
-
-    const logout = () => {
+    // Hàm xử lý auth failure chung
+    const handleAuthFailure = useCallback(() => {
         authService.logout();
         setUser(null);
-        setToken(null);
-    };
+        setTokenState(null);
+    }, []);
 
-    const login = async (email: string, password: string) => {
-        try {
-            const data = await authService.login(email, password);
-            if (data?.token) {
-                authService.setToken(data.token);
-                setUser(data.user as User);
-                setToken(data.token);
-                return true;
+    // Khởi tạo auth khi mount
+    useEffect(() => {
+        const initAuth = async () => {
+            const storedToken = authService.getToken();
+
+            if (!storedToken) {
+                setInitialized(true);
+                return;
             }
-            return false;
-        } catch (err) {
-            return false;
-        }
-    };
 
-    const register = async (name: string, email: string, password: string, role?: string) => {
-        try {
-            const data = await authService.register(name, email, password, role);
-            if (data?.token) {
-                authService.setToken(data.token);
-                setUser(data.user as User);
-                setToken(data.token);
-                return true;
+            try {
+                const resp = await userService.getMe();
+                if (resp?.success && resp.data) {
+                    setUser(resp.data as User);
+                    setTokenState(storedToken);
+                } else {
+                    handleAuthFailure();
+                }
+            } catch (err: any) {
+                if ([401, 403].includes(err?.response?.status)) {
+                    handleAuthFailure();
+                }
+            } finally {
+                setInitialized(true);
             }
-            return false;
-        } catch (err) {
-            return false;
-        }
-    };
+        };
 
-    const checkAuth = async () => {
+        initAuth();
+    }, [handleAuthFailure]);
+
+    // Set auth trực tiếp
+    const setAuth = useCallback(
+        (u: User | null, t: string | null) => {
+            if (u && t) {
+                handleAuthSuccess(u, t);
+            } else {
+                handleAuthFailure();
+            }
+        },
+        [handleAuthSuccess, handleAuthFailure]
+    );
+
+    // Logout
+    const logout = useCallback(() => {
+        handleAuthFailure();
+    }, [handleAuthFailure]);
+
+    // Login
+    const login = useCallback(
+        async (email: string, password: string): Promise<boolean> => {
+            try {
+                const data = await authService.login(email, password);
+                if (data?.token && data?.user) {
+                    handleAuthSuccess(data.user as User, data.token);
+                    return true;
+                }
+                return false;
+            } catch (err) {
+                return false;
+            }
+        },
+        [handleAuthSuccess]
+    );
+
+    // Register
+    const register = useCallback(
+        async (
+            name: string,
+            email: string,
+            password: string,
+            role?: string
+        ): Promise<boolean> => {
+            try {
+                const data = await authService.register(
+                    name,
+                    email,
+                    password,
+                    role
+                );
+                if (data?.token && data?.user) {
+                    handleAuthSuccess(data.user as User, data.token);
+                    return true;
+                }
+                return false;
+            } catch (err) {
+                return false;
+            }
+        },
+        [handleAuthSuccess]
+    );
+
+    // Check auth
+    const checkAuth = useCallback(async (): Promise<boolean> => {
         try {
             const resp = await userService.getMe();
             if (resp?.success && resp.data) {
@@ -103,10 +135,21 @@ export function AuthProviderClient({ children }: { children: React.ReactNode }) 
         } catch (err) {
             return false;
         }
-    };
+    }, []);
 
     return (
-        <AuthContext.Provider value={{ user, token, initialized, setAuth, logout, login, register, checkAuth }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                token,
+                initialized,
+                setAuth,
+                logout,
+                login,
+                register,
+                checkAuth,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
