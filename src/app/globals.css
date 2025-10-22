@@ -3,7 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary: #c14763;
+  --primary: #6d6c6c;
+  --header1: #fbb8b8;
+  --header2: #ececec;
+  --background-header: linear-gradient(to right, var(--header1), var(--header2));
 }
 
 @theme inline {
