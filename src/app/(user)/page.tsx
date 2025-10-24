@@ -11,7 +11,7 @@ export default function Home() {
         const fetchData = async () => {
             try {
                 const data = await getProducts();
-                if (data) setProducts(data?.products);
+                if (data) setProducts(data?.data);
             } catch (err) {
                 console.error('Error fetching products:', err);
             }
