@@ -8,3 +8,4 @@ export const getProducts = async () => {
     const res = await axios.get(`${API}/api/products`);
     return res.data;
 };
+

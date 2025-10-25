@@ -8,30 +8,40 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  console.log('ProductCard render, product =', product);
   return (
-    <div className="group bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-2 transition-all duration-300">
-      {/* Ảnh sản phẩm */}
-      <div className="relative w-full h-64 overflow-hidden">
+    <div className="group bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-lg overflow-hidden hover:shadow-md transition-transform w-full hover:scale-105 duration-300 cursor-pointer">
+      <div className="relative w-full pb-[56.25%]">
         <Image
           src={product?.image || '/placeholder.png'}
           alt={product?.name || 'product image'}
           fill
-          className="object-cover group-hover:scale-110 transition-transform duration-500"
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, 33vw"
         />
       </div>
 
-      {/* Nội dung */}
-      <div className="p-4 text-center">
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-white truncate">
-          {product?.name}
-        </h3>
-        <p className="text-pink-500 font-bold text-xl mt-2">
-          ${product?.price?.toFixed(2) || '0.00'}
-        </p>
+      {/* compact content */}
+      <div className="p-2.5 flex items-start gap-3">
+        <div className="flex-1 min-w-0">
+          <h3 className="text-sm font-medium text-gray-800 dark:text-white truncate">
+            {product?.name}
+          </h3>
+          {/* nếu có mô tả ngắn */}
+          {/* <p className="text-xs text-gray-500 mt-1 line-clamp-2">{product?.description}</p> */}
+          <div className="mt-2 flex items-center justify-between">
+            <span className="text-sm font-semibold text-pink-500">
+              ${product?.price?.toFixed(2) || '0.00'}
+            </span>
+          </div>
+        </div>
 
-        <button className="mt-4 w-full py-2 bg-pink-400 text-white rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-pink-500 transition-all duration-300">
-          <ShoppingCart className="w-5 h-5" />
-          Add to Cart
+        <button
+          className="p-2 rounded-md cursor-pointer bg-pink-500 text-white flex items-center justify-center hover:bg-pink-600"
+          aria-label="Add to cart"
+          title="Add to cart"
+        >
+          <ShoppingCart className="w-4 h-4" />
         </button>
       </div>
     </div>

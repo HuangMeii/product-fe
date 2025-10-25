@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, PanInfo } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 const cards = [
   {
@@ -68,9 +69,11 @@ export default function Carousel() {
                 transition={{ type: 'spring', stiffness: 250, damping: 30 }}
                 className="absolute rounded-3xl overflow-hidden shadow-2xl"
               >
-                <img
+                <Image
                   src={card.imageUrl}
                   alt={card.title}
+                  width={400}
+                  height={400}
                   className="w-[300px] md:w-[400px] h-[400px] object-cover"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent text-white font-semibold text-lg">
