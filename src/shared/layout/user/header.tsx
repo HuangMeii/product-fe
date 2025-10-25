@@ -2,6 +2,7 @@ import { ROUTES } from '#/shared/constant';
 import Link from 'next/link';
 import { User, ShoppingCart } from 'lucide-react';
 
+
 export const Header = () => {
     const navigation = [
         {

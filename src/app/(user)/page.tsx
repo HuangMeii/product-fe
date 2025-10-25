@@ -3,6 +3,7 @@
 import { I_Product } from '#/modules/product/product.model';
 import { getProducts } from '#/modules/product/product.service';
 import { useEffect, useState } from 'react';
+import ProductCard from '#/app/(user)/ProductCard';
 
 export default function Home() {
     const [products, setProducts] = useState<I_Product[]>();
@@ -21,11 +22,14 @@ export default function Home() {
     }, []);
 
     return (
-        // BTVN: tạo UI cho card(nhớ tách component), tạo footer
+    <section className="min-h-screen px-10 py-10 bg-gradient-to-r from-[#fbb8b8] to-[#ececec]">
+        {/* // BTVN: tạo UI cho card(nhớ tách component), tạo footer */}
         <div>
             {products?.map((product, index) => (
-                <div key={product?._id || index}>{product?.name}</div>
+                <ProductCard key={product?._id || index} product={product} />
             ))}
         </div>
+    </section>
     );
 }
+

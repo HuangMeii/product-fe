@@ -1,4 +1,6 @@
 import { Header } from '#/shared/layout/user';
+import Carousel from '#/shared/layout/user/card'; 
+
 
 export default function UserLayout({
     children,
@@ -8,9 +10,12 @@ export default function UserLayout({
     return (
         <>
             <Header />
+            <Carousel />
+            
             <main className="min-h-screen container mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 {children}
             </main>
         </>
     );
 }
+
