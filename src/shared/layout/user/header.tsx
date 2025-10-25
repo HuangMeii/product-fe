@@ -42,7 +42,7 @@ export const Header = () => {
                         MyShop
                     </Link>
                     <div className="flex items-center gap-x-6 md:hidden">
-                        <Link href={ROUTES.LOGIN}>
+                        <Link href={ROUTES.SIGNIN}>
                             <User className="size-6 hover:text-black transition-all hover:scale-115 duration-300 cursor-pointer border-black rounded-full" />
                         </Link>
                         <Link href={ROUTES.CART}>
@@ -66,7 +66,7 @@ export const Header = () => {
                 </nav>
 
                 <div className="items-center gap-x-6 hidden md:flex">
-                    <Link href={ROUTES.LOGIN}>
+                    <Link href={ROUTES.SIGNIN}>
                         <User className="size-6.5 hover:text-black transition-all hover:scale-115 duration-300 cursor-pointer border-black border-2 rounded-full" />
                     </Link>
                     <Link href={ROUTES.CART}>
