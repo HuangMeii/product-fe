@@ -2,14 +2,15 @@ import React from 'react';
 
 export default function Meow() {
   return (
-    <div className="meow-container relative w-full h-[900px] overflow-hidden">
+    <>
+    <div className="meow-container relative w-full h-[800px] overflow-hidden ml-[200px]">
       <img 
         src="https://api.builder.io/api/v1/image/assets/TEMP/c94e69ed8eb1a2736aba31756232bc27b4021204?width=344" 
         className="decoration-shape-rotated absolute w-[172px] h-[285px]" 
         style={{ 
           transform: 'rotate(30.807deg)',
           left: '734px',
-          top: '29px'
+          top: '0px'
         }}
         alt="Decorative shape" 
       />
@@ -18,7 +19,7 @@ export default function Meow() {
         className="blob-shape-left absolute w-[171px] h-[285px]" 
         style={{ 
           left: '467px',
-          top: '40px'
+          top: '10px'
         }}
         width="272" 
         height="330" 
@@ -95,8 +96,8 @@ export default function Meow() {
       <svg 
         className="character-face absolute w-[472px] h-[478px]" 
         style={{ 
-          left: '489px',
-          top: '203px'
+          left: '450px',
+          top: '140px'
         }}
         width="583" 
         height="597" 
@@ -130,9 +131,9 @@ export default function Meow() {
           </g>
           <path d="M527.651 291.716H526.651C526.651 420.669 421.444 525.216 291.651 525.216V526.216V527.216C422.536 527.216 528.651 421.785 528.651 291.716H527.651ZM291.651 526.216V525.216C161.858 525.216 56.6509 420.669 56.6509 291.716H55.6509H54.6509C54.6509 421.785 160.765 527.216 291.651 527.216V526.216ZM55.6509 291.716H56.6509C56.6509 162.764 161.858 58.2161 291.651 58.2161V57.2161V56.2161C160.765 56.2161 54.6509 161.647 54.6509 291.716H55.6509ZM291.651 57.2161V58.2161C421.444 58.2161 526.651 162.764 526.651 291.716H527.651H528.651C528.651 161.647 422.536 56.2161 291.651 56.2161V57.2161Z" style={{ mixBlendMode: 'plus-lighter' }} mask="url(#path-3-outside-1_115_702)"/>
         </g>
-        <ellipse className="left-eye" cx="205.64" cy="283.378" rx="18.1404" ry="24.5418" transform="rotate(-2.00809 205.64 283.378)" fill="black"/>
-        <ellipse className="nose" cx="289.774" cy="325.616" rx="9.78876" ry="15.7508" transform="rotate(-87.747 289.774 325.616)" fill="#C76B9C"/>
-        <ellipse className="right-eye" cx="355.64" cy="280.378" rx="18.1404" ry="24.5418" transform="rotate(-2.00809 355.64 280.378)" fill="black"/>
+        <ellipse className="left-eye" cx="150.64" cy="240.378" rx="18.1404" ry="24.5418" transform="rotate(-2.00809 205.64 283.378)" fill="black"/>
+        <ellipse className="nose" cx="300.774" cy="280.616" rx="9.78876" ry="15.7508" transform="rotate(-87.747 289.774 325.616)" fill="#C76B9C"/>
+        <ellipse className="right-eye" cx="325.64" cy="240.378" rx="18.1404" ry="24.5418" transform="rotate(-2.00809 355.64 280.378)" fill="black"/>
         <defs>
           <filter id="filter0_f_115_702" x="15.9509" y="118.516" width="532.4" height="478.4" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
             <feFlood floodOpacity="0" result="BackgroundImageFix"/>
@@ -195,39 +196,11 @@ export default function Meow() {
         </defs>
       </svg>
 
-      <svg 
-        className="shadow-ellipse absolute rounded-full" 
-        style={{ 
-          width: '431px',
-          height: '69px',
-          background: '#D9D9D9',
-          filter: 'blur(9.45px)',
-          left: '516px',
-          top: '745px'
-        }}
-        width="469" 
-        height="107" 
-        viewBox="0 0 469 107" 
-        fill="none" 
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g filter="url(#filter0_f_115_725)">
-          <ellipse cx="234.4" cy="53.3999" rx="215.5" ry="34.5" fill="#D9D9D9"/>
-        </g>
-        <defs>
-          <filter id="filter0_f_115_725" x="-9.72748e-05" y="-9.72748e-05" width="468.8" height="106.8" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-            <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-            <feGaussianBlur stdDeviation="9.45" result="effect1_foregroundBlur_115_725"/>
-          </filter>
-        </defs>
-      </svg>
-
       {/* WHISKERS (improved) */}
       {/* LEFT whiskers – curved + soft */}
       <svg
         className="absolute"
-        style={{ left: '355px', top: '380px' }} // was 320px
+        style={{ left: '325px', top: '380px' }} 
         width="300"
         height="90"
         viewBox="0 0 300 90"
@@ -249,7 +222,7 @@ export default function Meow() {
       {/* RIGHT whiskers – mirrored */}
       <svg
         className="absolute"
-        style={{ left: '800px', top: '380px' }} 
+        style={{ left: '750px', top: '380px' }} 
         width="300"
         height="90"
         viewBox="0 0 300 90"
@@ -267,23 +240,31 @@ export default function Meow() {
           <path d="M-10  12 Q 58  20 150   26" stroke="#111" strokeWidth="5" strokeLinecap="round" fill="none" />
         </g>
       </svg>
+      </div>
 
       <div 
-        className="heading-text absolute flex flex-col justify-center text-center" 
+        className="heading-text absolute flex flex-col justify-center px-10" 
         style={{ 
           width: '368px',
-          height: '111px',
           color: '#141414',
           fontFamily: 'Montserrat Alternates, -apple-system, Roboto, Helvetica, sans-serif',
           fontSize: '24px',
           fontWeight: 400,
           lineHeight: '24px',
           left: '13px',
-          top: '203px'
+          top: '203px',
+          minWidth: '500px',
         }}
       >
-        <span>Vì sao lại chọn shop meow?</span>
+        <span className='text-center'>Vì sao lại chọn shop meow?</span>
+        
+        <div className="mt-1.5 space-y-1.5 text-sm font-light leading-5">
+          <p>Shop meow là nơi cung cấp những sản phẩm chất lượng nhất!!.</p>
+          <p>Chúng tôi cam kết mang đến sự hài lòng cho khách hàng.</p>
+          <p>Hãy đến với chúng tôi để trải nghiệm dịch vụ tốt nhất!</p>
+        </div>
+        <button className='mt-7 ml-70 w-[130px] bg-[#E39595] rounded-2xl h-14 cursor-pointer shadow-md hover:shadow-[0_0_30px_#CF6C6C] transition duration-300 text-[15px] text-[#AA4141]'>Xem ngay</button>
       </div>
-    </div>
+    </>
   );
 }
