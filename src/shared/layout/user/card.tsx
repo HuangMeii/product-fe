@@ -84,7 +84,6 @@ export default function Carousel() {
           })}
         </motion.div>
 
-        {/* Nút điều hướng */}
         <button
           onClick={goPrev}
           className="absolute left-5 bg-white/10 hover:bg-white/20 text-white rounded-full p-2 backdrop-blur-sm"

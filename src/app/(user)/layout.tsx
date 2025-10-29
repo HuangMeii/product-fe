@@ -1,21 +1,25 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                import { Header } from '#/shared/layout/user';
-                                                                                                                                                                                                                                                                                                                                                                                                                import Carousel from '#/shared/layout/user/card'; 
+'use client';
+import { Header } from '#/shared/layout/user';
+import Carousel from '#/shared/layout/user/card';
+import SignupToSDT from '#/shared/layout/user/signupToSDT';
+import Signup from '#/shared/layout/user/signup';
+import Meow from '#/shared/layout/user/meow';
 
-
-                                                                                                                                                                                                                                                                                                                                                                                                                export default function UserLayout({
-                                                                                                                                                                                                                                                                                                                                                                                                                    children,
-                                                                                                                                                                                                                                                                                                                                                                                                                }: Readonly<{
-                                                                                                                                                                                                                                                                                                                                                                                                                    children: React.ReactNode;
-                                                                                                                                                                                                                                                                                                                                                                                                                }>) {
-                                                                                                                                                                                                                                                                                                                                                                                                                    return (
-                                                                                                                                                                                                                                                                                                                                                                                                                        <>
-                                                                                                                                                                                                                                                                                                                                                                                                                            <Header />
-                                                                                                                                                                                                                                                                                                                                                                                                                            <Carousel />
-                                                                                                                                                                                                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                                                                                                                                                                                            <main className="min-h-screen container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                                                                                                                                                                                                                                                                                                                                                                                                                                {children}
-                                                                                                                                                                                                                                                                                                                                                                                                                            </main>
-                                                                                                                                                                                                                                                                                                                                                                                                                        </>
-                                                                                                                                                                                                                                                                                                                                                                                                                    );
-                                                                                                                                                                                                                                                                                                                                                                                                                }
-
+export default function UserLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+        <Header />
+        <Meow />
+        <Carousel />
+        <Signup />
+        {/* <SignupToSDT /> */}
+        <main className="min-h-screen container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {children}
+      </main>
+    </>
+  );    
+}
