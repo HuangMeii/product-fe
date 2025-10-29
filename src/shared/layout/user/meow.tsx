@@ -249,7 +249,7 @@ export default function Meow() {
       {/* RIGHT whiskers – mirrored */}
       <svg
         className="absolute"
-        style={{ left: '760px', top: '380px' }} // was 740px
+        style={{ left: '800px', top: '380px' }} 
         width="300"
         height="90"
         viewBox="0 0 300 90"
@@ -262,9 +262,9 @@ export default function Meow() {
           </filter>
         </defs>
         <g transform="translate(100,45)" filter="url(#whiskerSoftR)">
-          <path d="M-14 -10 Q 60 -18 150 -26" stroke="#111" strokeWidth="6" strokeLinecap="round" fill="none" />
-          <path d="M-10   0 Q 62   0 145    0" stroke="#111" strokeWidth="5" strokeLinecap="round" fill="none" />
-          <path d="M-6   12 Q 58  20 138   26" stroke="#111" strokeWidth="5" strokeLinecap="round" fill="none" />
+          <path d="M-10 -10 Q 60 -18 150 -26" stroke="#111" strokeWidth="6" strokeLinecap="round" fill="none" />
+          <path d="M-14   0 Q 62   0 180    0" stroke="#111" strokeWidth="5" strokeLinecap="round" fill="none" />
+          <path d="M-10  12 Q 58  20 150   26" stroke="#111" strokeWidth="5" strokeLinecap="round" fill="none" />
         </g>
       </svg>
 
