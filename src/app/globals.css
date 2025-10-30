@@ -1,21 +1,255 @@
 @import 'tailwindcss';
 
-:root {
-    --background: #ffffff;
-    --foreground: #171717;
-    --primary: #6d6c6c;
-}
-
 @theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --font-sans: var(--font-geist-sans);
+    --font-segoe: var(--font-Segoe-UI);
     --font-mono: var(--font-geist-mono);
     --color-primary: var(--primary);
 }
 
-body {
-    background: var(--background);
-    color: var(--foreground);
-    font-family: Arial, Helvetica, sans-serif;
+:root {
+    --background: #ffffff;
+    --foreground: #171717;
+    --primary: #6d6c6c;
+    --font-Segoe-UI: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --cursor-dot-size: 10px;
+    --cursor-ring-size: 40px;
+    --cursor-dot-color: linear-gradient(
+        135deg,
+        #a855f7 0%,
+        #ec4899 50%,
+        #3b82f6 100%
+    );
+    --cursor-ring-color: rgba(168, 85, 247, 0.2);
+    --cursor-tail-color-start: rgba(168, 85, 247, 0.6);
+    --cursor-tail-color-end: rgba(236, 72, 153, 0.1);
+}
+
+/* Hide native cursor */
+body.has-custom-cursor,
+body.has-custom-cursor * {
+    cursor: none !important;
+}
+
+/* Main cursor dot with gradient */
+.custom-cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-dot-size);
+    height: var(--cursor-dot-size);
+    border-radius: 999px;
+    background: var(--cursor-dot-color);
+    pointer-events: none;
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 10001;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.5),
+        0 0 20px rgba(236, 72, 153, 0.3), 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 80ms ease-out, box-shadow 150ms ease;
+}
+
+/* Outer ring with glow */
+.custom-cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-ring-size);
+    height: var(--cursor-ring-size);
+    border-radius: 999px;
+    border: 2px solid var(--cursor-ring-color);
+    background: transparent;
+    pointer-events: none;
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 10000;
+    transition: width 200ms ease-out, height 200ms ease-out, opacity 250ms ease,
+        border-color 200ms ease;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.15),
+        inset 0 0 15px rgba(236, 72, 153, 0.1);
+}
+
+/* Tail effect - multiple trail particles */
+.custom-cursor-tail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 100ms ease-out;
+}
+
+/* Tail particles with staggered animation */
+.custom-cursor-tail:nth-child(1) {
+    background: radial-gradient(
+        circle,
+        var(--cursor-tail-color-start) 0%,
+        transparent 70%
+    );
+    width: 8px;
+    height: 8px;
+}
+
+.custom-cursor-tail:nth-child(2) {
+    background: radial-gradient(
+        circle,
+        rgba(168, 85, 247, 0.5) 0%,
+        transparent 70%
+    );
+    width: 7px;
+    height: 7px;
+}
+
+.custom-cursor-tail:nth-child(3) {
+    background: radial-gradient(
+        circle,
+        rgba(236, 72, 153, 0.4) 0%,
+        transparent 70%
+    );
+    width: 6px;
+    height: 6px;
+}
+
+.custom-cursor-tail:nth-child(4) {
+    background: radial-gradient(
+        circle,
+        rgba(59, 130, 246, 0.35) 0%,
+        transparent 70%
+    );
+    width: 5px;
+    height: 5px;
+}
+
+.custom-cursor-tail:nth-child(5) {
+    background: radial-gradient(
+        circle,
+        var(--cursor-tail-color-end) 0%,
+        transparent 70%
+    );
+    width: 4px;
+    height: 4px;
+}
+
+/* Hover state - enlarge and brighten */
+body[data-cursor='hover'] .custom-cursor-dot {
+    transform: translate3d(-50%, -50%, 0) scale(1.3);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.7),
+        0 0 30px rgba(236, 72, 153, 0.5), 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+body[data-cursor='hover'] .custom-cursor-ring {
+    width: calc(var(--cursor-ring-size) * 1.5);
+    height: calc(var(--cursor-ring-size) * 1.5);
+    border-color: rgba(168, 85, 247, 0.35);
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.25),
+        inset 0 0 20px rgba(236, 72, 153, 0.15);
+}
+
+/* Click/active state */
+body[data-cursor='active'] .custom-cursor-dot {
+    transform: translate3d(-50%, -50%, 0) scale(0.8);
+}
+
+body[data-cursor='active'] .custom-cursor-ring {
+    width: calc(var(--cursor-ring-size) * 0.8);
+    height: calc(var(--cursor-ring-size) * 0.8);
+    border-width: 3px;
+    border-color: rgba(236, 72, 153, 0.5);
+}
+
+/* Text selection state */
+body[data-cursor='text'] .custom-cursor-dot {
+    transform: translate3d(-50%, -50%, 0) scaleX(0.3) scaleY(1.2);
+    border-radius: 2px;
+}
+
+body[data-cursor='text'] .custom-cursor-ring {
+    opacity: 0.5;
+}
+
+/* Pulse animation for idle state */
+@keyframes cursor-pulse {
+    0%,
+    100% {
+        transform: translate3d(-50%, -50%, 0) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translate3d(-50%, -50%, 0) scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.custom-cursor-ring.idle {
+    animation: cursor-pulse 2s ease-in-out infinite;
+}
+
+/* Sparkle effect on click */
+@keyframes sparkle {
+    0% {
+        transform: translate3d(-50%, -50%, 0) scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(-50%, -50%, 0) scale(2) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+.custom-cursor-sparkle {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    z-index: 9998;
+    background: radial-gradient(
+        circle,
+        rgba(168, 85, 247, 0.8) 0%,
+        transparent 70%
+    );
+    border-radius: 999px;
+    animation: sparkle 600ms ease-out forwards;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .custom-cursor-dot,
+    .custom-cursor-ring,
+    .custom-cursor-tail {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .custom-cursor-ring.idle {
+        animation: none !important;
+    }
+}
+
+/* Hide on touch devices */
+@media (hover: none) and (pointer: coarse) {
+    body.has-custom-cursor .custom-cursor-dot,
+    body.has-custom-cursor .custom-cursor-ring,
+    body.has-custom-cursor .custom-cursor-tail,
+    body.has-custom-cursor .custom-cursor-sparkle {
+        display: none !important;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --cursor-dot-color: linear-gradient(
+            135deg,
+            #c084fc 0%,
+            #f472b6 50%,
+            #60a5fa 100%
+        );
+        --cursor-ring-color: rgba(192, 132, 252, 0.25);
+        --cursor-tail-color-start: rgba(192, 132, 252, 0.7);
+        --cursor-tail-color-end: rgba(244, 114, 182, 0.15);
+    }
 }
