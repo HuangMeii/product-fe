@@ -1,31 +1,10 @@
-import { ROUTES } from '#/shared/constant';
+import { NAVIGATION, ROUTES } from '#/shared/constant';
+
 import Link from 'next/link';
 import { User, ShoppingCart, Phone, Mail, Clock } from 'lucide-react';
 
 export const Header = () => {
-    const navigation = [
-        {
-            id: '1',
-            label: 'Home',
-            url: '/',
-        },
-        {
-            id: '2',
-            label: 'Products',
-            url: '/product',
-        },
-        {
-            id: '3',
-            label: 'About',
-            url: '/about',
-        },
-        {
-            id: '4',
-            label: 'Contact',
-            url: '/contact',
-        },
-    ];
-
+    
     return (
         <>
             {/* Top bar with gradient */}
@@ -62,7 +41,7 @@ export const Header = () => {
 
                         {/* Navigation - Desktop with modern styling */}
                         <nav className="hidden md:flex items-center gap-2">
-                            {navigation.map((nav) => (
+                            {NAVIGATION.map((nav) => (
                                 <Link
                                     key={nav.id}
                                     href={nav.url}
@@ -97,7 +76,7 @@ export const Header = () => {
 
                     {/* Navigation - Mobile with improved spacing */}
                     <nav className="md:hidden flex items-center justify-center gap-1 pb-4 border-t border-purple-100 pt-4">
-                        {navigation.map((nav) => (
+                        {NAVIGATION.map((nav) => (
                             <Link
                                 key={nav.id}
                                 href={nav.url}
