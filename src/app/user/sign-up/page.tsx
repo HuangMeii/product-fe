@@ -1,6 +1,7 @@
 'use client';
 
-import { signUp } from '#/modules/auth/auth.model';
+import { signUp } from '#/modules/auth/auth.service';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -13,11 +14,12 @@ export default function SignUp() {
 
     const handleSignUp = async () => {
         try {
-            await signUp({
+            const auth = await signUp({
                 password: form.password,
                 email: form.email,
                 name: form.name,
             });
+            localStorage.setItem('token_product', auth.token);
         } catch (error: any) {
             toast.error(error?.response?.data?.message || 'Sign up failed');
         }
@@ -72,6 +74,11 @@ export default function SignUp() {
                 >
                     Sign In
                 </button>
+
+                {/* login */}
+                <Link href="/user/login" className="ml-5 self-end mt-10">
+                    Already have an account? Log In
+                </Link>
             </div>
         </div>
     );
