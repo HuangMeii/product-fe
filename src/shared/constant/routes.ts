@@ -1,8 +1,8 @@
 export const ROUTES = {
     HOME: '/',
-    LOGIN: '/login',
+    SIGN_UP : '/user/sign-up',
     CART: '/cart',
-    SIGNIN: '/user/signin',
+    SIGN_IN : '/user/sign-in',
 };
 
 export const NAVIGATION = [

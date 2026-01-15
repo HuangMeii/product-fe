@@ -1,6 +1,45 @@
-'use client'
-import Link from 'next/link';
-import React, { useState, useRef } from 'react';
+'use client';
+
+import { useState, useRef, ChangeEvent, FormEvent } from 'react';
+import { login } from '#/modules/auth/auth.service';
+import { toast } from 'react-toastify';
+
+export default function Login() {
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!form.email || !form.password) {
+      toast.error('Vui lòng nhập đầy đủ thông tin!');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const auth = await login(form);
+      localStorage.setItem('token_product', auth.token);
+      toast.success('Đăng nhập thành công!');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error('Đăng nhập thất bại!');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
 const UserIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -73,6 +112,7 @@ const FloatingLabelInput: React.FC<{
       </div>
       <input
         id={id}
+        name={id}
         type={type}
         value={value}
         onChange={onChange}
@@ -112,7 +152,6 @@ const Signin2: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [fullName, setFullName] = useState<string>('');
 
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -134,35 +173,23 @@ const Signin2: React.FC = () => {
             {/* Header */}
             <div className="flex flex-col space-y-2 text-center mb-6">
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-                Create an account
+                Chào mừng quay trở lại!
               </h1>
               <p className="text-sm text-muted-foreground">
-                Enter your details below to create your account
+                Nhập thông tin của bạn bên dưới để đăng nhập 
               </p>
             </div>
 
-            <form className="space-y-4">
-              {/* Full Name Input */}
-              <div className="space-y-2">
-                <FloatingLabelInput
-                  id="fullName"
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Full Name"
-                  icon={<UserIcon />}
-                />
-              </div>
-
+            <form className="space-y-4" onSubmit={handleLogin}>
               {/* Email Input */}
               <div className="space-y-2">
                 <FloatingLabelInput
                   id="email"
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
                   icon={<MailIcon />}
+                  value={form.email}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -171,9 +198,9 @@ const Signin2: React.FC = () => {
                 <FloatingLabelInput
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder="Mật khẩu"
                   icon={<LockIcon />}
                   rightIcon={showPassword ? <EyeOffIcon /> : <EyeIcon />}
                   onRightIconClick={togglePasswordVisibility}
@@ -183,10 +210,11 @@ const Signin2: React.FC = () => {
               {/* Submit Button */}
               <button
                 type="submit"
+                 disabled={loading}
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
               >
-                Create Account
-              </button>
+                {loading ? 'Đang xử lý...' : 'Đăng nhập'}
+               </button>
             </form>
 
             {/* Divider */}
@@ -196,7 +224,7 @@ const Signin2: React.FC = () => {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-white dark:bg-black px-2 text-muted-foreground">
-                  Or continue with
+                  Hoặc tiếp tục với
                 </span>
               </div>
             </div>
@@ -222,12 +250,12 @@ const Signin2: React.FC = () => {
             {/* Footer */}
             <div className="mt-6 text-center text-sm">
               <span className="text-muted-foreground">
-                Already have an account?{' '}
+               Bạn chưa tài khoản?{' '}
                 <a
                   href="#"
                   className="underline underline-offset-4 hover:text-primary transition-colors"
                 >
-                  Sign in
+                  Sign up
                 </a>
               </span>
             </div>
@@ -238,4 +266,5 @@ const Signin2: React.FC = () => {
   );
 };
 
-export default Signin2;
+    return <Signin2 />;
+}

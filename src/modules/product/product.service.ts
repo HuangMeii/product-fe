@@ -6,6 +6,10 @@ const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 export const getProducts = async () => {
     // Endpoint: /api/products
     const res = await axios.get(`${API}/api/products`);
+    
     return res.data;
+    // axios.post create product
+    // axios.put update product
+    // axios.delete delete product  
 };
 

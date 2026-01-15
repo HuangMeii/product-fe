@@ -56,7 +56,7 @@ export const Header = () => {
                         {/* Icons with modern design */}
                         <div className="flex items-center gap-3">
                             <Link
-                                href={ROUTES.SIGNIN}
+                                href={ROUTES.SIGN_IN}
                                 className="p-3 text-slate-700 hover:text-purple-600 bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-purple-200/50 hover:scale-105"
                                 aria-label="User account"
                             >
@@ -69,7 +69,7 @@ export const Header = () => {
                             >
                                 <ShoppingCart className="size-5" />
                                 {/* Optional: Cart badge */}
-                                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg">3</span>
+                                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs font-bold rounded-full size-5 flex items-center justify-center shadow-lg">3</span>
                             </Link>
                         </div>
                     </div>
