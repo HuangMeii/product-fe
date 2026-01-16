@@ -31,7 +31,7 @@ export const checkAuth = async (token: string) => {
     return res.data?.result as I_User;
 };
 
-export const login = async ({
+export const signIn = async ({
     email,
     password,
 }: {

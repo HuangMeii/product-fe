@@ -3,48 +3,58 @@ import Link from 'next/link';
 import React, { useState, useRef, ChangeEvent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { signIn } from '#/modules/auth/auth.service';
+import { signUp } from '#/modules/auth/auth.service';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
-export default function SignIn(){
-    const [form, setForm] = useState({ email: '', password: '' });
+export default function SignUp() {
     const [loading, setLoading] = useState(false);
+    const [form, setForm] = useState({
+        name: '',
+        email: '',
+        password: '',
+    });
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-    };
+    // const handleSignUp = async () => {
+    //     try {
+    //         const auth = await signUp({
+    //             password: form.password,
+    //             email: form.email,
+    //             name: form.name,
+    //         });
+    //         localStorage.setItem('token_product', auth.token);
+    //     } catch (error: any) {
+    //         toast.error(error?.response?.data?.message || 'Sign up failed');
+    //     }
+    // };
 
-    const handleLogin = async (e: React.FormEvent) => {
-      e.preventDefault();
+    const handleSignUp = async () => {
+    try {
+        const auth = await signUp({
+        password: form.password,
+        email: form.email,
+        name: form.name,
+        });
 
-      if (!form.email || !form.password) {
-          return toast.error('Vui lòng nhập đầy đủ thông tin!');
-      }
-
-      setLoading(true);
-      try {
-        const auth = await signIn(form);
         localStorage.setItem('token_product', auth.token);
-        toast.success('Đăng nhập thành công!');
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          toast.error(error.message);
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || 'Sign up failed');
+        } else if (error instanceof Error) {
+        toast.error(error.message);
         } else {
-          toast.error('Đăng nhập thất bại!');
+        toast.error('Sign up failed');
         }
-      } finally {
-        setLoading(false);
-      }
+    }
     };
     return(
       <div className='min-h-5.5 flex items-center justify-center bg-gradient-to-b from-[#fbb8b8] to-[#ececec] my-10 mx-60 rounded-2xl'>
-        <div className="signup-container align-bottom p-9">  
+        <div className="signup-container align-bottom p-9 w-116">  
           <h1 className='font-bold text-3xl text-center'>Meow</h1>
-          <p className='text-2xl mb-3'>Vui lòng điền thông tin đăng nhập</p>
+          <p className='text-2xl mb-3 text-center'>Chào mừng bạn mới</p>
           <div>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSignUp}>
               <div>
                 {/* <p className='text-sm mb-0 pt-2.5 ml-3'>Email</p> */}
                 <div 
@@ -52,11 +62,28 @@ export default function SignIn(){
                   <input
                     className='w-full px-3 py-2 mb-3.5 bg-gradient-to-t from-[#eebdbd] to-[#ececec] rounded-2xl focus:outline-none focus:bg-gradient-to-b from-[#fbb8b8] to-[#ececec]' 
                     type="text" 
-                    value={form.email}
-                    name='email'
                     required
-                    onChange={handleChange}
-                    placeholder='Nhập mail ...'/>
+                    onChange={(e) => {
+                        setForm((value) => ({
+                            ...value,
+                            name: e.target.value,
+                        }));
+                    }}                    
+                    placeholder='Họ tên ...'/>
+                </div>
+                <div 
+                className='h-[43px] p-[1px] rounded-2xl bg-gradient-to-b from-[#fd9f9f] to-[#ececec] mb-4.5'>
+                  <input
+                    className='w-full px-3 py-2 mb-3.5 bg-gradient-to-t from-[#eebdbd] to-[#ececec] rounded-2xl focus:outline-none focus:bg-gradient-to-b from-[#fbb8b8] to-[#ececec]' 
+                    required
+                    onChange={(e) => {
+                            setForm((prevForm) => ({
+                                ...prevForm,
+                                email: e.target.value,
+                            }));
+                        }}
+                    type="email"                
+                    placeholder='Email ...'/>
                 </div>
               </div>
               <div>
@@ -66,9 +93,13 @@ export default function SignIn(){
                   className='w-full px-3 py-2 mb-3.5 bg-gradient-to-t from-[#eebdbd] to-[#ececec] rounded-2xl focus:outline-none focus:bg-gradient-to-b from-[#fbb8b8] to-[#ececec]' 
                   type="password" 
                   value={form.password}
-                  name='password'
                   required
-                  onChange={handleChange}
+                  onChange={(e) => {
+                            setForm((prevForm) => ({
+                                ...prevForm,
+                                password: e.target.value,
+                            }));
+                        }}
                   placeholder='Nhập mật khẩu ...'/>
                 </div>
               </div>
@@ -77,14 +108,14 @@ export default function SignIn(){
                 type="submit"
                 disabled={loading}
               >
-                <p className='px-27.5'>{loading ? 'Đang xử lý...' : 'Đăng nhập'}</p>
+                <p className='px-27.5'>{loading ? 'Đang xử lý...' : 'Đăng ký'}</p>
               </button>
 
             </form>
             <div className='size-auto mt-4'>
-              Bạn chưa có tài khoản? 
-              <Link href="/user/sign-up" className="ml-1 self-end w-5 underline italic">
-                  Đăng ký ngay
+              Bạn đã có tài khoản? 
+              <Link href="/user/sign-in" className="ml-1 self-end w-5 underline italic">
+                  Đăng nhập
                 </Link>
             </div>
             <div>
