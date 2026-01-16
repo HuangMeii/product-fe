@@ -11,3 +11,15 @@ export const deleteUser = async (userId: string, token: string) => {
     });
     return res.data?.result as { message: string };
 };
+
+export const updateUser = async (userId: string, token: string, userData: Partial<{name: string; email: string; isActive: boolean;}>) => {
+    // Endpoint: /api/users/:id
+
+    const res = await axios.put(`${API}/api/users/${userId}`, userData, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return res.data?.result as { message: string };
+};

@@ -28,7 +28,7 @@ export const checkAuth = async (token: string) => {
             Authorization: `Bearer ${token}`,
         },
     });
-    return res.data?.result as I_User;
+    return res.data.result as I_User;
 };
 
 export const signIn = async ({
