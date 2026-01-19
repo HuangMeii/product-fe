@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuth } from '#/modules/auth/auth.context';
 import { I_Product } from '#/modules/product/product.model';
 import { getProducts } from '#/modules/product/product.service';
 import { Meow } from '#/shared/components';
@@ -8,6 +9,7 @@ import { useEffect, useState } from 'react';
 
 export default function Page() {
     const [products, setProducts] = useState([]);
+    const {isLoggedIn} = useAuth();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -23,6 +25,9 @@ export default function Page() {
 
     return (
         <div>
+            {
+                isLoggedIn ? <p>Welcome back, valued user!</p> : <p>Please log in to access more features.</p>
+            }
             {/* Start section Meow */}
             <section>
                 <Meow />

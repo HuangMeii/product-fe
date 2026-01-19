@@ -3,21 +3,18 @@
 import { checkAuth } from '#/modules/auth/auth.service';
 import { I_User } from '#/modules/user/user.model';
 import { deleteUser } from '#/modules/user/user.service';
+import { TOKEN_KEY } from '#/shared/constant/instant-axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function Profile() {
-    const token = localStorage.getItem('token_product');
-
     const [user, setUser] = useState<I_User>();
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                if (token) {
-                    const userData = await checkAuth(token);
-                    setUser(userData);
-                }
+                const userData = await checkAuth();
+                setUser(userData);
             } catch (error: any) {
                 toast.error(
                     error?.response?.data?.message ||
@@ -27,12 +24,12 @@ export default function Profile() {
         };
 
         fetchUser();
-    }, [token]);
+    });
 
     const handleDeleteUser = async () => {
         try {
             if (user?._id) {
-                await deleteUser(user._id, token || '');
+                await deleteUser(user._id);
                 toast.success('User deleted successfully');
                 setUser(undefined);
             }

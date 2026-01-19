@@ -1,13 +1,7 @@
-import axios from 'axios';
+import instantAxios from "#/shared/constant/instant-axios";
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-
-export const deleteUser = async (userId: string, token: string) => {
+export const deleteUser = async (userId: string) => {
     // Endpoint: /api/users/:id
-    const res = await axios.delete(`${API}/api/users/${userId}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+    const res = await instantAxios.delete(`/api/users/${userId}`);
     return res.data?.result as { message: string };
 };

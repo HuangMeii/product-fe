@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { I_Auth } from './auth.model';
 import { I_User } from '../user/user.model';
-
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+import instantAxios from '#/shared/constant/instant-axios';
 
 export const signUp = async ({
     name,
@@ -14,7 +12,7 @@ export const signUp = async ({
     password: string;
 }) => {
     // Endpoint: /api/auth/register
-    const res = await axios.post(`${API}/api/auth/register`, {
+    const res = await instantAxios.post(`/api/auth/register`, {
         name,
         email,
         password,
@@ -22,12 +20,8 @@ export const signUp = async ({
     return res.data?.result as I_Auth;
 };
 
-export const checkAuth = async (token: string) => {
-    const res = await axios.get(`${API}/api/auth/check-auth`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+export const checkAuth = async () => {
+    const res = await instantAxios.get(`/api/auth/check-auth`);
     return res.data?.result as I_User;
 };
 
@@ -38,7 +32,7 @@ export const login = async ({
     email: string;
     password: string;
 }) => {
-    const res = await axios.post(`${API}/api/auth/login`, {
+    const res = await instantAxios.post(`/api/auth/login`, {
         email,
         password,
     });

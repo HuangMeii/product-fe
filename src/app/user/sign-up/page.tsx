@@ -1,6 +1,7 @@
 'use client';
 
 import { signUp } from '#/modules/auth/auth.service';
+import { TOKEN_KEY } from '#/shared/constant/instant-axios';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -19,7 +20,7 @@ export default function SignUp() {
                 email: form.email,
                 name: form.name,
             });
-            localStorage.setItem('token_product', auth.token);
+            localStorage.setItem(TOKEN_KEY, auth.token);
         } catch (error: any) {
             toast.error(error?.response?.data?.message || 'Sign up failed');
         }

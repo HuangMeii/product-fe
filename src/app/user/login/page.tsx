@@ -1,6 +1,7 @@
 'use client';
 
 import { login } from '#/modules/auth/auth.service';
+import { TOKEN_KEY } from '#/shared/constant/instant-axios';
 import React, { useState, ChangeEvent } from 'react';
 import { toast } from 'react-toastify';
 
@@ -23,7 +24,7 @@ export default function Login() {
         setLoading(true);
         try {
             const auth = await login(form);
-            localStorage.setItem('token_product', auth.token);
+            localStorage.setItem(TOKEN_KEY, auth.token);
             toast.success('Đăng nhập thành công!');
         } catch (error: any) {
             toast.error(error?.message || 'Đăng nhập thất bại!');
